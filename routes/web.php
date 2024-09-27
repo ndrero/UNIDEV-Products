@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('/produtos/estoque-baixo', [Controller::class, 'getWithLowStock']);
+
+Route::get('/produtos/categorias', [Controller::class, 'getByCategory']);
+
 Route::get('/produtos/{id}', [Controller::class, 'getById']);
 
 Route::get('/produtos', [Controller::class, 'getAll']);
+
+
 

@@ -102,7 +102,32 @@ class Product // extends Model
         $productsCollection = collect($this->products);
 
         return $productsCollection
-            ->where("id", $id);
+            ->where("id", $id)
+            ->first();
+    }
+
+    public function getWithLowStock()
+    {
+
+        $productsCollection = collect($this->products);
+
+        return $productsCollection
+            ->where("estoque", "<", 20);
+    }
+
+    public function getByCategory($category = null)
+    {
+        if(empty($category)){
+            $productsCollection = collect($this->products);
+            return $productsCollection
+            ->groupBy("categorias");
+        }
+
+        $productsCollection = collect($this->products);
+
+        return $productsCollection
+            ->where("categorias", $category)
+            ->all();
     }
 
 }
