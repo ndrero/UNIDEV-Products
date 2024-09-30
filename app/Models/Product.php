@@ -105,18 +105,15 @@ class Product // extends Model
 
     public function getWithLowStock()
     {
-
         $productsCollection = collect($this->products);
 
         return $productsCollection
             ->where("estoque", "<", 20)->all();
-
     }
 
 
     public function getByCategory($category)
     {
-
         $productsCollection = collect($this->products);
 
         return $productsCollection
@@ -124,20 +121,17 @@ class Product // extends Model
                 return in_array($category, $product['categorias']);
             })
             ->values();
-
     }
 
 
     public function getCategories()
     {
-
         $productsCollection = collect($this->products);
+
         return $productsCollection
             ->pluck('categorias')
             ->flatten()
             ->unique()
             ->values();
-
     }
-
 }
