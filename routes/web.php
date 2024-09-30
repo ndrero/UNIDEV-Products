@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/produtos/estoque-baixo', [ProductsController::class, 'getWithLowStock']);
 
-Route::get('/produtos/estoque-baixo', [Controller::class, 'getWithLowStock']);
+Route::get('/produtos/categorias', [ProductsController::class, 'getByCategory']);
 
-Route::get('/produtos/categorias', [Controller::class, 'getByCategory']);
+Route::get('/categorias', [ProductsController::class, 'getCategories']);
 
-Route::get('/produtos/{id}', [Controller::class, 'getById']);
+Route::get('/produtos/{id}', [ProductsController::class, 'getById']);
 
-Route::get('/produtos', [Controller::class, 'getAll']);
+Route::get('/produtos', [ProductsController::class, 'getAll']);
 
 
 

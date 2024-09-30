@@ -93,12 +93,8 @@ class Product // extends Model
     }
 
 
-    public function getById($id = null)
+    public function getById($id)
     {
-        if(empty($id)){
-            return $this->products;
-        }
-
         $productsCollection = collect($this->products);
 
         return $productsCollection
@@ -106,28 +102,42 @@ class Product // extends Model
             ->first();
     }
 
+
     public function getWithLowStock()
     {
 
         $productsCollection = collect($this->products);
 
         return $productsCollection
-            ->where("estoque", "<", 20);
+            ->where("estoque", "<", 20)->all();
+
     }
 
-    public function getByCategory($category = null)
+
+    public function getByCategory($category)
     {
-        if(empty($category)){
-            $productsCollection = collect($this->products);
-            return $productsCollection
-            ->groupBy("categorias");
-        }
 
         $productsCollection = collect($this->products);
 
         return $productsCollection
-            ->where("categorias", $category)
-            ->all();
+            ->filter(function ($product) use ($category){
+                return in_array($category, $product['categorias']);
+            })
+            ->values();
+
+    }
+
+
+    public function getCategories()
+    {
+
+        $productsCollection = collect($this->products);
+        return $productsCollection
+            ->pluck('categorias')
+            ->flatten()
+            ->unique()
+            ->values();
+
     }
 
 }
