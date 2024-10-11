@@ -18,23 +18,32 @@ class ProductController extends Controller
     }
 
     /**
-     * Devolve um JSON com todos os produtos
+     * Devolve todos os produtos registrados se houver algum
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return $this->product->all();
+        $products = $this->product->all();
+
+        if(!$products){
+            return response('Ainda não há produtos registrados', 404);
+        }
     }
 
     /**
-     * Devolve um produto a partir do seu ID
+     * Devolve um produto a partir do seu ID se houver algum
      *
      * @return \Illuminate\Http\Response
      */
     public function getById($id)
     {
-        return $this->product->find($id);
+        $product = $this->product->find($id);
+
+        if(!$product){
+            return response('Não foi possível encontrar um produto com esse ID', 404);
+        }
+        return $product;
     }
 
     /**
@@ -44,12 +53,7 @@ class ProductController extends Controller
      */
     public function getWithLowStock($quantity = 20)
     {
-        $products = $this->product
-            ->where('estoque', '<', $quantity)
-            ->orderBy('estoque')
-            ->get();
-
-        return $products;
+        return $this->product->getWithLowStock($quantity);
     }
 
     /**
@@ -59,9 +63,13 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $data = $request->only(['nome', 'preco', 'estoque']);
+        $product = $this->product->store($request);
 
-        return $this->product->create($data);
+        if(!$product)
+        {
+            return response('Não foi possível registrar no banco de dados', 404);
+        }
+        return $product;
     }
 
 
